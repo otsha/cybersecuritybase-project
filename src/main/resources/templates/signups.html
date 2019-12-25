@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Signups</title>
+    </head>
+    <body>
+
+        <h1>All registrations</h1>
+
+        <ul th:each="signup : ${signups}">
+            <li th:text="${signup.name}"></li>
+        </ul>
+
+        <p></p>
+        
+        <!--VULNERABILITY: SENSITIVE DATA EXPOSURE -->
+        <!-- Looks like someone forgot to remove their debug logging from the application! -->
+        <!-- The following allows anyone viewing this page harvest attendee address information from the console! -->
+        <script th:inline="javascript">
+            /* <![CDATA[*/
+
+            var signups = /*[[${signups}]]*/ null;
+            console.log(signups);
+
+            /*]]>*/
+    </script>
+    </body>
+</html>
