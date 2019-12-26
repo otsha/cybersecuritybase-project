@@ -18,11 +18,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
 
+    /*
+    VULNERABILITY: SECURITY MISCONFIGURATION
+    The application has practically no security whatsoever, which
+    allows for CSRF attacks, brute-forcing and, even exposes event attendee
+    personal information as their addresses are not encoded.
+    */
+    
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // no real security at the moment
         http.authorizeRequests()
                 .anyRequest().permitAll();
+        http.csrf().disable();
     }
 
     /*
