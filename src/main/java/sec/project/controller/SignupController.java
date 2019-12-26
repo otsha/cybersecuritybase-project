@@ -27,11 +27,18 @@ public class SignupController {
         return "form";
     }
 
+    /*
+    Event sign up with:
+        - Name
+        - Address
+        - Password
+    */
     @RequestMapping(value = "/form", method = RequestMethod.POST)
-    public String submitForm(Model m, @RequestParam String name, @RequestParam String address, @RequestParam String password) {
+    public String signupForm(Model m, @RequestParam String name, @RequestParam String address, @RequestParam String password) {
         System.out.println("SYSTEM: NEW SIGNUP > name: " + name + " time: " + System.nanoTime());
         
         // Check if password is at least 4 characters long
+        // This is clearly a massive vulnerability
         if (password.length() < 4) {
             m.addAttribute("notification", "Password must be at least 4 characters long!");
             return "form";
@@ -43,6 +50,12 @@ public class SignupController {
         return "done";
     }
 
+    /*
+    User login with:
+        - Name
+        - Password
+        - Registration number
+    */
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public String loginForm(Model m, @RequestParam String login_name, @RequestParam String login_password, @RequestParam Long id) {
         System.out.println("SYSTEM: NEW LOGIN ATTEMPT > name: " + login_name + " time: " + System.nanoTime());
@@ -59,8 +72,9 @@ public class SignupController {
         }
     }
 
+    // List all event sign-ups
     @RequestMapping(value = "/signups", method = RequestMethod.GET)
-    public String loadSignUp(Model m) {
+    public String signupList(Model m) {
         List<Signup> allSignups = signupRepository.findAll();
         m.addAttribute("signups", allSignups);
 
