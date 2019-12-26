@@ -27,9 +27,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // no real security at the moment
         http.authorizeRequests()
                 .anyRequest().permitAll();
+        
+        /* Maybe the developer thought that disabling csrf() in fact protects
+        the application from CSRF attacks? To be fair, the Spring method
+        naming system here is not super intuitive. */
         http.csrf().disable();
     }
 

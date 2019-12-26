@@ -28,10 +28,28 @@ public class SignupController {
     }
 
     @RequestMapping(value = "/form", method = RequestMethod.POST)
-    public String submitForm(@RequestParam String name, @RequestParam String address) {
-        signupRepository.save(new Signup(name, address));
+    public String submitForm(Model m, @RequestParam String name, @RequestParam String address, @RequestParam String password) {
         System.out.println("SYSTEM: NEW SIGNUP > name: " + name + " time: " + System.nanoTime());
+        
+        Signup saved = signupRepository.save(new Signup(name, address, password));
+        
+        m.addAttribute("signup", saved);
         return "done";
+    }
+
+    @RequestMapping(value = "/registration", method = RequestMethod.POST)
+    public String loginForm(Model m, @RequestParam String login_name, @RequestParam String login_password, @RequestParam Long id) {
+        System.out.println("SYSTEM: NEW LOGIN ATTEMPT > name: " + login_name + " time: " + System.nanoTime());
+        
+        Signup found = signupRepository.findOne(id);
+        
+        if (found == null) {
+            return "form";
+        }
+        
+        m.addAttribute("signup", found);
+        
+        return "registration";
     }
 
     @RequestMapping(value = "/signups", method = RequestMethod.GET)
@@ -51,14 +69,12 @@ public class SignupController {
     the requester is allowed to remove this registration.
     
     This allows anyone to remove registrations, as long as they know their IDs.
-    */
+     */
     @RequestMapping(value = "/signups/remove/{id}")
     public String removeSignUp(@PathVariable Long id) {
         signupRepository.delete(id);
-        
-        return "redirect:/signups";    
+
+        return "redirect:/signups";
     }
-
-
 
 }
