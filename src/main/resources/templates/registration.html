@@ -6,17 +6,17 @@
     <body>
 
         <h1>You have been signed up to the event!</h1>
-        
+
         <p>Your information:</p>
         <ul>
             <li th:text="${signup.name}"></li>
             <li th:text="${signup.address}"></li>
             <li th:text="${signup.id}"></li>
         </ul>
-        
+
         <a th:href="@{'/signups/remove/' + ${signup.id}}">Cancel Registration</a>
         <a href='/signups'>View All Registrations</a>
-        
+
     </body>
 </html>
 

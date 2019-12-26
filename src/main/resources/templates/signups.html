@@ -10,11 +10,11 @@
         <ul th:each="signup : ${signups}">
             <li th:text="${signup.name}"></li>
         </ul>
-        
+
         <a href='/form'>Home</a>
-        
+
         <p></p>
-        
+
         <!--VULNERABILITY: SENSITIVE DATA EXPOSURE -->
         <!-- Looks like someone forgot to remove their debug logging from the application! -->
         <!-- The following allows anyone viewing this page harvest attendee address information from the console! -->
@@ -25,6 +25,6 @@
             console.log(signups);
 
             /*]]>*/
-    </script>
+        </script>
     </body>
 </html>

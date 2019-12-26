@@ -31,8 +31,14 @@ public class SignupController {
     public String submitForm(Model m, @RequestParam String name, @RequestParam String address, @RequestParam String password) {
         System.out.println("SYSTEM: NEW SIGNUP > name: " + name + " time: " + System.nanoTime());
         
-        Signup saved = signupRepository.save(new Signup(name, address, password));
+        // Check if password is at least 4 characters long
+        if (password.length() < 4) {
+            m.addAttribute("notification", "Password must be at least 4 characters long!");
+            return "form";
+        }
         
+        Signup saved = signupRepository.save(new Signup(name, address, password));
+
         m.addAttribute("signup", saved);
         return "done";
     }
@@ -40,16 +46,17 @@ public class SignupController {
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public String loginForm(Model m, @RequestParam String login_name, @RequestParam String login_password, @RequestParam Long id) {
         System.out.println("SYSTEM: NEW LOGIN ATTEMPT > name: " + login_name + " time: " + System.nanoTime());
-        
+
         Signup found = signupRepository.findOne(id);
-        
-        if (found == null) {
+
+        if (found != null && found.getName().equals(login_name) && found.getPassword().equals(login_password)) {
+
+            m.addAttribute("signup", found);
+
+            return "registration";
+        } else {
             return "form";
         }
-        
-        m.addAttribute("signup", found);
-        
-        return "registration";
     }
 
     @RequestMapping(value = "/signups", method = RequestMethod.GET)
